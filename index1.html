@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APEX VELOCITY | Premium Hypercars</title>
+    <style>
+        /* --- CORE CONFIGURATION & THEMING --- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        :root {
+            --primary: #ff3333;
+            --primary-hover: #cc0000;
+            --bg-deep: #070707;
+            --bg-surface: #121212;
+            --bg-card: #1a1a1a;
+            --text-main: #ffffff;
+            --text-muted: #8a8a8a;
+            --border: #262626;
+            --radius: 8px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-deep);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        a { text-decoration: none; color: inherit; }
+        ul { list-style: none; }
+
+        /* --- GLOBAL WRAPPERS --- */
+        .section-padding {
+            padding: 100px 8%;
+        }
+
+        .section-header {
+            margin-bottom: 50px;
+            border-left: 5px solid var(--primary);
+            padding-left: 20px;
+        }
+
+        .section-title {
+            font-size: clamp(1.8rem, 4vw, 2.6rem);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 15px;
+            margin-top: 5px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--primary);
+            color: var(--text-main);
+            padding: 14px 35px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            font-size: 13px;
+            border-radius: var(--radius);
+            transition: var(--transition);
+            border: 2px solid transparent;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: transparent;
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(255, 51, 51, 0.15);
+        }
+
+        /* --- HEADER & NAVIGATION --- */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 8%;
+            background-color: rgba(7, 7, 7, 0.95);
+            backdrop-filter: blur(12px);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 35px;
+        }
+
+        .nav-links a {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            transition: var(--transition);
+            position: relative;
+            padding-bottom: 4px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--text-main);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover::after { width: 100%; }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 6px;
+            z-index: 1010;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 26px;
+            height: 3px;
+            background-color: var(--text-main);
+            border-radius: 2px;
+            transition: var(--transition);
+        }
+
+        /* --- SCROLL PROGRESS INDICATOR --- */
+        .progress-container {
+            position: fixed;
+            top: 73px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: transparent;
+            z-index: 1001;
+        }
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            width: 0%;
+        }
+
+        /* --- HERO --- */
+        .hero {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 0 8%;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(7,7,7,0.9)), 
+                        url('https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            padding-top: 80px;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 7vw, 4.8rem);
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.2rem);
+            max-width: 600px;
+            color: var(--text-muted);
+            margin-bottom: 35px;
+        }
+
+        /* --- ENGINEERING METRICS FEATURES --- */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            background-color: var(--bg-surface);
+        }
+
+        .metric-card {
+            background-color: var(--bg-card);
+            padding: 35px 30px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .metric-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        .metric-icon {
+            font-size: 28px;
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+
+        .metric-card h3 {
+            font-size: 18px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .metric-card p {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* --- PERFORMANCE DYNAMICS SIMULATOR --- */
+        .telemetry-section {
+            background-color: var(--bg-deep);
+            border-top: 1px solid var(--border);
+        }
+        .telemetry-dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+            background: var(--bg-surface);
+            padding: 40px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+        .telemetry-controls h3 {
+            font-size: 24px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+        .telemetry-toggle-box {
+            margin: 25px 0;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+        }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: var(--border);
+            transition: .4s;
+            border-radius: 34px;
+        }
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 26px; width: 26px;
+            left: 4px; bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        input:checked + .slider { background-color: var(--primary); }
+        input:checked + .slider:before { transform: translateX(26px); }
+        
+        .readout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .readout-card {
+            background: var(--bg-card);
+            padding: 20px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+            text-align: center;
+        }
+        .readout-card label {
+            display: block;
+            font-size: 11px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+        .readout-value {
+            font-size: 28px;
+            font-weight: 900;
+            color: var(--text-main);
+        }
+        .readout-value.highlight { color: var(--primary); }
+
+        /* --- DYNAMIC SHOWCASE & FILTER --- */
+        .showcase { background-color: var(--bg-deep); border-top: 1px solid var(--border); }
+
+        .filter-container {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: var(--bg-surface);
+            color: var(--text-main);
+            border: 1px solid var(--border);
+            padding: 10px 24px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--primary);
+            border-color: var(--primary);
+            color: var(--text-main);
+        }
+
+        .car-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 35px;
+        }
+
+        .car-card {
+            background-color: var(--bg-surface);
+            border-radius: var(--radius);
+            overflow: hidden;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .car-card.hidden { display: none; }
+
+        .car-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-8px);
+        }
+
+        .car-img-box {
+            height: 230px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .spec-overlay {
+            position: absolute;
+            top: 10px; right: 10px;
+            background: rgba(0,0,0,0.75);
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: bold;
+            border: 1px solid var(--border);
+            letter-spacing: 1px;
+        }
+
+        .car-img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .car-card:hover .car-img-box img {
+            transform: scale(1.06);
+        }
+
+        .car-body { padding: 30px; }
+        .car-body h3 { font-size: 22px; text-transform: uppercase; margin-bottom: 10px; }
+        .car-body p { color: var(--text-muted); font-size: 14px; margin-bottom: 20px; }
+
+        .specs-row {
+            display: flex;
+            justify-content: space-between;
+            border-top: 1px solid var(--border);
+            padding-top: 15px;
+        }
+
+        .spec-cell { text-align: left; font-size: 12px; color: var(--text-muted); }
+        .spec-cell span { display: block; color: var(--primary); font-size: 15px; font-weight: 800; margin-top: 2px; }
+
+        /* --- MATERIAL VISUALIZER --- */
+        .visualizer-section {
+            background-color: var(--bg-deep);
+            border-top: 1px solid var(--border);
+        }
+        .visualizer-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        .visualizer-preview-box {
+            width: 100%;
+            max-width: 500px;
+            height: 250px;
+            border-radius: var(--radius);
+            margin: 25px 0;
+            background: #151515;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 20px;
+        }
+        .material-carbon {
+            background: linear-gradient(45deg, #111 25%, #222 25%, #222 50%, #111 50%, #111 75%, #222 75%, #222 100%);
+            background-size: 20px 20px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+        .material-chrome {
+            background: linear-gradient(135deg, #777 0%, #ccc 50%, #444 100%);
+            color: #111;
+        }
+        .visualizer-controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* --- CONSULTATION / CONTACT FORM --- */
+        .contact-section { background-color: var(--bg-surface); border-top: 1px solid var(--border); }
+        
+        .form-wrapper {
+            max-width: 700px;
+            margin: 0 auto;
+            background-color: var(--bg-card);
+            padding: 40px;
+            border-radius: var(--radius);
+            border: 1px solid var(--border);
+        }
+
+        .form-group { margin-bottom: 25px; }
+
+        .form-group label {
+            display: block;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 8px;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+        }
+
+        .form-control {
+            width: 100%;
+            background-color: var(--bg-deep);
+            border: 1px solid var(--border);
+            padding: 14px;
+            color: var(--text-main);
+            border-radius: 4px;
+            font-size: 15px;
+            transition: var(--transition);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 8px rgba(255, 51, 51, 0.1);
+        }
+
+        /* --- NOTIFICATION SYSTEM --- */
+        .notification-toast {
+            position: fixed;
+            bottom: -100px;
+            right: 30px;
+            background-color: #101010;
+            border-left: 4px solid var(--primary);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+            padding: 20px 30px;
+            border-radius: var(--radius);
+            z-index: 2000;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.5);
+        }
+        .notification-toast.show { bottom: 30px; }
+        .notification-toast h4 { text-transform: uppercase; font-size: 14px; margin-bottom: 2px; letter-spacing: 1px;}
+        .notification-toast p { font-size: 12px; color: var(--text-muted); }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: #030303;
+            padding: 40px 8%;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            font-size: 13px;
+            color: #4a4a4a;
+        }
+
+        /* --- EXTENDED ADAPTIVE RESPONSIVENESS --- */
+        @media (max-width: 992px) {
+            .section-padding { padding: 80px 5%; }
+            header { padding: 20px 5%; }
+            .telemetry-dashboard { grid-template-columns: 1fr; gap: 30px; }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger { display: flex; }
+            
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 80%;
+                max-width: 320px;
+                height: 100vh;
+                background-color: rgba(10, 10, 10, 0.98);
+                border-left: 1px solid var(--border);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 35px;
+                transition: var(--transition);
+                z-index: 1005;
+            }
+
+            .nav-links.active { right: 0; }
+
+            .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(6px, 6px); }
+            .hamburger.active span:nth-child(2) { opacity: 0; }
+            .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(6px, -6px); }
+
+            .form-wrapper { padding: 25px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">APEX</div>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#" class="active">Home</a></li>
+            <li><a href="#engineering">Engineering</a></li>
+            <li><a href="#telemetry">Telemetry</a></li>
+            <li><a href="#showcase">Fleet</a></li>
+            <li><a href="#visualizer">Spec Lab</a></li>
+            <li><a href="#allocation">Allocations</a></li>
+        </ul>
+        <div class="hamburger" id="hamburgerMenu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </header>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="scrollIndicator"></div>
+    </div>
+
+    <section class="hero">
+        <h1>Raw Power.<br>Refined Elegance.</h1>
+        <p>Experience the outer limits of automotive engineering. Discover the machines designed to shatter records and turn heads.</p>
+        <a href="#showcase" class="btn">View Collection</a>
+    </section>
+
+    <section class="section-padding metrics-grid" id="engineering">
+        <div class="metric-card">
+            <div class="metric-icon">&#9670;</div>
+            <h3>Monocoque Hull</h3>
+            <p>100% pre-preg carbon fiber cells delivering unmatched torsional rigidity and low mass structural safety weights.</p>
+        </div>
+        <div class="metric-card">
+            <div class="metric-icon">&#9737;</div>
+            <h3>Active Aero</h3>
+            <p>Computes continuous wing-pitch angle alterations automatically based on high-speed kinetic force feedback arrays.</p>
+        </div>
+        <div class="metric-card">
+            <div class="metric-icon">&#9889;</div>
+            <h3>Hybrid Assist</h3>
+            <p>Instant structural vector torque distribution channels generated via recovery energy configurations.</p>
+        </div>
+    </section>
+
+    <section class="section-padding telemetry-section" id="telemetry">
+        <div class="section-header">
+            <h2 class="section-title">Aero Dynamics Simulator</h2>
+            <p class="section-subtitle">Toggle tracking profiles to compute real-time theoretical velocity adjustments</p>
+        </div>
+        <div class="telemetry-dashboard">
+            <div class="telemetry-controls">
+                <h3>Track Configuration Profile</h3>
+                <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 15px;">
+                    Engaging track mode transforms body panel wing-pitch settings downforcing structural fields while modifying terminal execution limits.
+                </p>
+                <div class="telemetry-toggle-box">
+                    <span style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;">Standard Configuration</span>
+                    <label class="switch">
+                        <input type="checkbox" id="trackModeCheckbox">
+                        <span class="slider"></span>
+                    </label>
+                    <span style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--primary);">Track Execution Mode</span>
+                </div>
+            </div>
+            <div class="readout-grid">
+                <div class="readout-card">
+                    <label>Drag Coefficient</label>
+                    <div class="readout-value" id="dragReadout">0.31 Cd</div>
+                </div>
+                <div class="readout-card">
+                    <label>Downforce Vector</label>
+                    <div class="readout-value" id="downforceReadout">450 kg</div>
+                </div>
+                <div class="readout-card">
+                    <label>Terminal Velocity Max</label>
+                    <div class="readout-value highlight" id="speedReadout">217 mph</div>
+                </div>
+                <div class="readout-card">
+                    <label>Energy Regeneration</label>
+                    <div class="readout-value" id="regenReadout">15%</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding showcase" id="showcase">
+        <div class="section-header">
+            <h2 class="section-title">The Hypercar Fleet</h2>
+            <p class="section-subtitle">Filter current conceptual inventory classes by engine layout variants</p>
+        </div>
+
+        <div class="filter-container">
+            <button class="filter-btn active" data-filter="all">All Systems</button>
+            <button class="filter-btn" data-filter="combustion">Pure ICE</button>
+            <button class="filter-btn" data-filter="hybrid">E-Hybrid / EV</button>
+        </div>
+
+        <div class="car-grid" id="fleetGrid">
+            <div class="car-card" data-category="combustion">
+                <div class="car-img-box">
+                    <span class="spec-overlay" id="overlay-strike">Core Trim</span>
+                    <img src="https://images.unsplash.com/photo-1544636331-e26879cd4d9b?auto=format&fit=crop&w=600&q=80" alt="Aero-Strike V8">
+                </div>
+                <div class="car-body">
+                    <h3>Aero-Strike V8</h3>
+                    <p>Track-focused configuration utilizing clean legacy atmospheric aspiration principles.</p>
+                    <div class="specs-row">
+                        <div class="spec-cell">Power<span>789 HP</span></div>
+                        <div class="spec-cell">0-60 mph<span>2.7s</span></div>
+                        <div class="spec-cell">Engine<span>Twin-Turbo V8</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="car-card" data-category="hybrid">
+                <div class="car-img-box">
+                    <span class="spec-overlay" id="overlay-horizon">Core Trim</span>
+                    <img src="https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=600&q=80" alt="Apex Horizon">
+                </div>
+                <div class="car-body">
+                    <h3>Apex Horizon</h3>
+                    <p>Blending electric motor response fields directly with a legendary internal block frame.</p>
+                    <div class="specs-row">
+                        <div class="spec-cell">Power<span>950 HP</span></div>
+                        <div class="spec-cell">0-60 mph<span>2.4s</span></div>
+                        <div class="spec-cell">Engine<span>V12 E-Hybrid</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="car-card" data-category="hybrid">
+                <div class="car-img-box">
+                    <span class="spec-overlay" id="overlay-volt">Core Trim</span>
+                    <img src="https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e?auto=format&fit=crop&w=600&q=80" alt="Volt X Interceptor">
+                </div>
+                <div class="car-body">
+                    <h3>Volt X Interceptor</h3>
+                    <p>A true paradigm shift relying on independent quad-drive wheel power layouts.</p>
+                    <div class="specs-row">
+                        <div class="spec-cell">Power<span>1200 HP</span></div>
+                        <div class="spec-cell">0-60 mph<span>1.9s</span></div>
+                        <div class="spec-cell">Engine<span>Quad-Motor Electric</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding visualizer-section" id="visualizer">
+        <div class="section-header">
+            <h2 class="section-title">Trim Visualizer Lab</h2>
+            <p class="section-subtitle">Preview structural carbon weave modifications instantly on virtual dynamic body matrices</p>
+        </div>
+        <div class="visualizer-card">
+            <p style="color: var(--text-muted); font-size: 14px; max-width: 600px; margin-bottom: 10px;">
+                Select custom trim architectural layers below to evaluate surface component aesthetics.
+            </p>
+            <div class="visualizer-preview-box material-carbon" id="materialPreview">
+                Carbon Fiber Weave
+            </div>
+            <div class="visualizer-controls">
+                <button class="filter-btn active" id="btnCarbon">Pre-Preg Carbon</button>
+                <button class="filter-btn" id="btnChrome">Shadow Chrome</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section-padding contact-section" id="allocation">
+        <div class="section-header">
+            <h2 class="section-title">Secure An Allocation</h2>
+            <p class="section-subtitle">Submit configuration criteria requests directly to private intake networks</p>
+        </div>
+
+        <div class="form-wrapper">
+            <form id="allocationForm">
+                <div class="form-group">
+                    <label for="clientName">Full Legal Identity</label>
+                    <input type="text" id="clientName" class="form-control" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="clientEmail">Secure Communication Endpoint</label>
+                    <input type="email" id="clientEmail" class="form-control" placeholder="j.doe@apex.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="variantSelect">Preferred Power Configuration Unit</label>
+                    <select id="variantSelect" class="form-control">
+                        <option value="strike">Aero-Strike V8 (Pure ICE)</option>
+                        <option value="horizon">Apex Horizon (V12 E-Hybrid)</option>
+                        <option value="volt">Volt X Interceptor (Quad-Motor EV)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn" style="width: 100%;">Submit Acquisition Blueprint</button>
+            </form>
+        </div>
+    </section>
+
+    <div class="notification-toast" id="notificationToast">
+        <h4 id="toastTitle">System Notification</h4>
+        <p id="toastBody">Processing network configurations data packets...</p>
+    </div>
+
+    <footer>
+        <p>&copy; 2026 APEX Velocity Performance Systems. Engineering concepts are architectural presentation templates.</p>
+    </footer>
+
+    <script>
+        // Mobile Toggle Mechanics
+        const hamburger = document.getElementById('hamburgerMenu');
+        const navLinks = document.getElementById('navLinks');
+
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navLinks.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', () => {
+                hamburger.classList.remove('active');
+                navLinks.classList.remove('active');
+            });
+        });
+
+        // Interactive Car Filter Logic
+        const filterButtons = document.querySelectorAll('.filter-btn[data-filter]');
+        const carCards = document.querySelectorAll('.car-card');
+
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelector('.filter-btn.active').classList.remove('active');
+                btn.classList.add('active');
+
+                const filterValue = btn.getAttribute('data-filter');
+
+                carCards.forEach(card => {
+                    const cardCategory = card.getAttribute('data-category');
+                    if(filterValue === 'all' || cardCategory === filterValue) {
+                        card.classList.remove('hidden');
+                    } else {
+                        card.classList.add('hidden');
+                    }
+                });
+            });
+        });
+
+        // Sticky Scroll Reading Progress Indicator
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('scrollIndicator').style.width = scrolled + '%';
+        });
+
+        // Real-time Telemetry Simulator Logic Engine
+        const trackCheckbox = document.getElementById('trackModeCheckbox');
+        const dragReadout = document.getElementById('dragReadout');
+        const downforceReadout = document.getElementById('downforceReadout');
+        const speedReadout = document.getElementById('speedReadout');
+        const regenReadout = document.getElementById('regenReadout');
+
+        trackCheckbox.addEventListener('change', () => {
+            if(trackCheckbox.checked) {
+                dragReadout.innerText = "0.38 Cd";
+                downforceReadout.innerText = "920 kg";
+                speedReadout.innerText = "242 mph";
+                regenReadout.innerText = "30%";
+                showNotification("Track Mode Activated", "Aerodynamic wing-pitch altered. Performance boundaries expanded.");
+            } else {
+                dragReadout.innerText = "0.31 Cd";
+                downforceReadout.innerText = "450 kg";
+                speedReadout.innerText = "217 mph";
+                regenReadout.innerText = "15%";
+                showNotification("Standard Mode Restored", "Comfort configuration metrics re-engaged.");
+            }
+        });
+
+        // Trim Spec Visualizer Lab Module
+        const materialPreview = document.getElementById('materialPreview');
+        const btnCarbon = document.getElementById('btnCarbon');
+        const btnChrome = document.getElementById('btnChrome');
+        const overlays = ['overlay-strike', 'overlay-horizon', 'overlay-volt'];
+
+        btnCarbon.addEventListener('click', () => {
+            btnChrome.classList.remove('active');
+            btnCarbon.classList.add('active');
+            materialPreview.className = "visualizer-preview-box material-carbon";
+            materialPreview.innerText = "Carbon Fiber Weave";
+            overlays.forEach(id => document.getElementById(id).innerText = "Carbon Edge");
+        });
+
+        btnChrome.addEventListener('click', () => {
+            btnCarbon.classList.remove('active');
+            btnChrome.classList.add('active');
+            materialPreview.className = "visualizer-preview-box material-chrome";
+            materialPreview.innerText = "Shadow Chrome Plating";
+            overlays.forEach(id => document.getElementById(id).innerText = "Chrome Limited");
+        });
+
+        // Toast Notification Engine Trigger
+        const toast = document.getElementById('notificationToast');
+        const toastTitle = document.getElementById('toastTitle');
+        const toastBody = document.getElementById('toastBody');
+
+        function showNotification(title, text) {
+            toastTitle.innerText = title;
+            toastBody.innerText = text;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 4000);
+        }
+
+        // Intercept Form Submission
+        document.getElementById('allocationForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const clientName = document.getElementById('clientName').value;
+            showNotification(
+                "Allocation Request Filed", 
+                `Salutations, ${clientName}. Your blueprint configuration has been wired directly to our engineering intake network.`
+            );
+            document.getElementById('allocationForm').reset();
+        });
+    </script>
+</body>
+</html>

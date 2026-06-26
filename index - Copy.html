@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus E-Sports Championship Hub</title>
+    <link rel="stylesheet" href="style - Copy.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="logo">🏆 NEXUS <span>E-SPORTS</span></div>
+        <nav class="nav-links">
+            <a href="#dashboard" class="active">Dashboard</a>
+            <a href="#bracket">Brackets</a>
+            <a href="#schedule">Schedule</a>
+            <a href="#rules">Rules</a>
+        </nav>
+        <div class="stats-container">
+            <div class="stat-badge">Teams: <span id="team-count">16/16</span></div>
+            <div class="stat-badge live"><span class="pulse-dot"></span> LIVE BROADCAST</div>
+        </div>
+    </header>
+
+    <div class="dashboard-grid">
+        
+        <aside class="panel sidebar-panel" id="dashboard">
+            <div class="panel-header">
+                <h2>Tournament Console</h2>
+            </div>
+            <form class="control-form" onsubmit="event.preventDefault();">
+                <div class="form-group">
+                    <label for="teamName">Register New Squad</label>
+                    <input type="text" id="teamName" placeholder="e.g., Cloud9" required>
+                </div>
+                <div class="form-group">
+                    <label for="gameSelect">Select Game Discipline</label>
+                    <select id="gameSelect">
+                        <option>Valorant</option>
+                        <option>Counter-Strike 2</option>
+                        <option>League of Legends</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-neon">Add Team</button>
+            </form>
+            <div class="action-separator"></div>
+            <button class="btn btn-outline">Randomize Seeds</button>
+            <button class="btn btn-danger">Reset Data</button>
+        </aside>
+
+        <section class="panel stream-panel">
+            <div class="panel-header">
+                <h2>Main Stage Broadcast</h2>
+            </div>
+            <div class="video-placeholder">
+                <div class="play-overlay">
+                    <div class="play-button"></div>
+                    <p>STREAM OFFLINE - MATCHES RESUME SOON</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="panel bracket-panel" id="bracket">
+            <div class="panel-header">
+                <h2>Championship Bracket</h2>
+            </div>
+            <div class="bracket-wrapper">
+                
+                <div class="bracket-round">
+                    <span class="round-title">Quarterfinals</span>
+                    <div class="match-box">
+                        <div class="match-team winner">Sentinels <span class="score">2</span></div>
+                        <div class="match-team">Fnatic <span class="score">1</span></div>
+                    </div>
+                    <div class="match-box">
+                        <div class="match-team winner">T1 <span class="score">2</span></div>
+                        <div class="match-team">Team Liquid <span class="score">0</span></div>
+                    </div>
+                </div>
+
+                <div class="bracket-round">
+                    <span class="round-title">Semifinals</span>
+                    <div class="match-box">
+                        <div class="match-team winner">Sentinels <span class="score">2</span></div>
+                        <div class="match-team">T1 <span class="score">1</span></div>
+                    </div>
+                </div>
+
+                <div class="bracket-round">
+                    <span class="round-title">Grand Finals</span>
+                    <div class="match-box grand-final">
+                        <div class="match-team">Sentinels <span class="score">-</span></div>
+                        <div class="match-team">Natus Vincere <span class="score">-</span></div>
+                    </div>
+                </div>
+
+                <div class="bracket-round champion-round">
+                    <span class="round-title">Champion</span>
+                    <div class="trophy-box">
+                        <div class="trophy-icon">👑</div>
+                        <div class="trophy-text">DECIDING MATCH</div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="panel leaderboard-panel">
+            <div class="panel-header">
+                <h2>Group Stage Standings</h2>
+            </div>
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Pos</th>
+                            <th>Team</th>
+                            <th>W/L</th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="top-seed">
+                            <td>1</td>
+                            <td><strong>Sentinels</strong></td>
+                            <td>5 - 0</td>
+                            <td>15</td>
+                        </tr>
+                        <tr class="top-seed">
+                            <td>2</td>
+                            <td><strong>Natus Vincere</strong></td>
+                            <td>4 - 1</td>
+                            <td>12</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>Fnatic</td>
+                            <td>3 - 2</td>
+                            <td>9</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>T1</td>
+                            <td>2 - 3</td>
+                            <td>6</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="panel schedule-panel" id="schedule">
+            <div class="panel-header">
+                <h2>Match Timeline</h2>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item upcoming">
+                    <span class="time">15:00 UTC</span>
+                    <div class="details">
+                        <h4>Grand Finals: Bo5 Series</h4>
+                        <p>Sentinels vs Natus Vincere</p>
+                    </div>
+                </div>
+                <div class="timeline-item completed">
+                    <span class="time">12:30 UTC</span>
+                    <div class="details">
+                        <h4>Semifinal B: Bo3</h4>
+                        <p>Navi [2] vs G2 Esports [0]</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="panel rules-panel" id="rules">
+            <div class="panel-header">
+                <h2>Tournament Regulations</h2>
+            </div>
+            <div class="rules-grid">
+                <div class="rule-card">
+                    <h3>1. Competitive Integrity</h3>
+                    <p>Any form of hardware alteration, third-party software exploitation, or collusion will result in immediate disqualification without appeal.</p>
+                </div>
+                <div class="rule-card">
+                    <h3>2. Pauses & Technicals</h3>
+                    <p>Each team is permitted a maximum of two (2) tactical pauses per map, lasting no longer than 60 seconds each. Technical pauses must clear admin authorization.</p>
+                </div>
+                <div class="rule-card">
+                    <h3>3. Format Structure</h3>
+                    <p>Group stages follow a round-robin format. Playoffs scale to a single-elimination bracket setup. Regular matches are Bo3, Grand Finals run as Bo5.</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+</body>
+</html>
